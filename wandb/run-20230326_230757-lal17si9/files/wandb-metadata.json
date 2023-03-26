@@ -1,0 +1,193 @@
+{
+    "os": "Linux-4.15.0-142-generic-x86_64-with-glibc2.23",
+    "python": "3.9.16",
+    "heartbeatAt": "2023-03-26T21:07:58.170877",
+    "startedAt": "2023-03-26T21:07:57.435936",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/local/musaeed/T5LowResourceGeneration/T5_lowresourceGeneration.py",
+    "codePath": "T5_lowresourceGeneration.py",
+    "git": {
+        "remote": "https://github.com/muhammed-saeed/T5LowResourceGeneration.git",
+        "commit": "bebfab1ef69bfb8c9a7db95d94fe06ae69f985db"
+    },
+    "email": null,
+    "root": "/local/musaeed/T5LowResourceGeneration",
+    "host": "tony-1",
+    "username": "musaeed",
+    "executable": "/local/musaeed/anaconda3/envs/t5/bin/python3",
+    "cpu_count": 12,
+    "cpu_count_logical": 24,
+    "cpu_freq": {
+        "current": 3044.9962916666664,
+        "min": 1200.0,
+        "max": 3401.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3275.899,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3251.802,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3275.181,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3386.862,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3254.213,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3271.637,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3400.002,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 1496.489,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3700.001,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3277.603,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3400.0,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 1621.301,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3265.28,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3242.139,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3264.473,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3239.935,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3244.59,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3261.493,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3399.999,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 1559.957,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3699.972,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3369.591,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 3399.992,
+            "min": 1200.0,
+            "max": 3401.0
+        },
+        {
+            "current": 1521.5,
+            "min": 1200.0,
+            "max": 3401.0
+        }
+    ],
+    "disk": {
+        "total": 124.92434310913086,
+        "used": 22.671184539794922
+    },
+    "gpu": "Tesla V100-PCIE-32GB",
+    "gpu_count": 8,
+    "gpu_devices": [
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        },
+        {
+            "name": "Tesla V100-PCIE-32GB",
+            "memory_total": 34089730048
+        }
+    ],
+    "memory": {
+        "total": 754.6000366210938
+    }
+}

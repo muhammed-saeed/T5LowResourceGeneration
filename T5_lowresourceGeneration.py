@@ -14,18 +14,8 @@ dataset = TextDataset(tokenizer=tokenizer, file_path=corpus_file, block_size=max
 model = T5ForConditionalGeneration.from_pretrained("t5-small")
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-# Define a collate function for the data collator
-def my_collate_fn(examples):
-    input_ids = [example["input_ids"] for example in examples]
-    attention_mask = [example["attention_mask"] for example in examples]
 
-    return {
-        "input_ids": input_ids,
-        "attention_mask": attention_mask,
-    }
-
-data_collator.collate_fn = my_collate_fn
-
+data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 training_args = TrainingArguments(
     output_dir="/local/musaeed/new_language_t5_pretraining",
     num_train_epochs=10,

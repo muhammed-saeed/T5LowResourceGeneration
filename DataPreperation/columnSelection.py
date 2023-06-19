@@ -1,7 +1,7 @@
 import argparse
 import pandas as pd
 
-df = pd.read_csv("/local/musaeed/NaijaDiscourseClassification/PDTBNaija/pdtb2.csv")
+df = pd.read_csv("/local/musaeed/NaijaDiscourseClassification/data/pdtb2.csv")
 print(df.head())
 print(df.columns)
 print(f"{df['Conn1'].head()} and {df['Conn2'].head()} ")

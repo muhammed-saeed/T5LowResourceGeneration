@@ -2,3 +2,4 @@ simpletransformers
 numpy
 pandas
 sacrebleu
+torch==1.12

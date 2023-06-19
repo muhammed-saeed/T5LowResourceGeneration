@@ -50,20 +50,23 @@ def main(argss):
     
     
     
-    ARG1_pcm_preds = model.predict(ARG1_to_preds[:5])
+    ARG1_pcm_preds = model.predict(ARG1_to_preds)
     pdtb_df["ARG1_RawText_PCM"] = ARG1_pcm_preds
     pdtb_df.to_csv("data/sample/arg1_raw_text_pcm.csv")
 
-    # ARG2_pcm_preds = model.predict([ARG2_to_preds])
+    ARG2_pcm_preds = model.predict(ARG2_to_preds)
+    pdtb_df["ARG2_RawText_PCM"] = ARG2_pcm_preds
+    pdtb_df.to_csv("data/sample/arg2_raw_text_pcm.csv")
 
-    # FullRawText_pcm_preds = model.predict(FullText_to_preds)
 
-    # ConnectiveFullText_pcm_preds = model.predict(connective_to_pred)
-    
-    
-    # pdtb_df["ARG2_RawText_PCM"] = ARG2_pcm_preds
-    # pdtb_df["FullRawText_PCM"] = FullRawText_pcm_preds
-    # pdtb_df["Connective_RawText"] = ConnectiveFullText_pcm_preds
+    FullRawText_pcm_preds = model.predict(FullText_to_preds)
+    pdtb_df["FullRawText_PCM"] = FullRawText_pcm_preds
+    pdtb_df.to_csv("data/sample/full_text_pcm.csv")
+
+
+    ConnectiveFullText_pcm_preds = model.predict(connective_to_pred)
+    pdtb_df["Connective_RawText"] = ConnectiveFullText_pcm_preds
+    pdtb_df.to_csv("data/sample/connective_RawText.csv")
 
     pdtb_df.to_csv(argss.pdtb_pcm)
     

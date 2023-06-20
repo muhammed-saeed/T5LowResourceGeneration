@@ -64,15 +64,36 @@ def main(argss):
     pdtb_df.to_csv("data/sample/full_text_pcm.csv")
 
 
-    ConnectiveFullText_pcm_preds = model.predict(connective_to_pred)
-    pdtb_df["Connective_RawText"] = ConnectiveFullText_pcm_preds
-    pdtb_df.to_csv("data/sample/connective_RawText.csv")
+    # ConnectiveFullText_pcm_preds = model.predict(connective_to_pred)
+    
+    # pdtb_df["Connective_RawText"] = ConnectiveFullText_pcm_preds
+    # pdtb_df.to_csv("data/sample/connective_RawText.csv")
+    conn1_values = pdtb_df.loc[pd.notnull(pdtb_df['Conn1']), 'Conn1'].tolist()
+    conn2_values = pdtb_df.loc[pd.notnull(pdtb_df['Conn2']), 'Conn2'].tolist()
+    connective_rawtext_values = pdtb_df.loc[pd.notnull(pdtb_df['Connective_RawText']), 'Connective_RawText'].tolist()
 
+    # Perform the translation for each non-null value
+    conn1_translations = [en2pcm + s for s in conn1_values]
+    conn2_translations = [en2pcm + s for s in conn2_values]
+    connective_rawtext_translations = [en2pcm + s for s in connective_rawtext_values]
+
+    translation_conn1 = model.predict(conn1_translations)
+    pdtb_df["Conn1_PCM"] = pdtb_df["Conn1"].copy()
+    pdtb_df.loc[pd.notnull(pdtb_df['Conn1_PCM']), 'Conn1'] = translation_conn1
+    pdtb_df.to_csv("data/pcmExplicitConnectives/explicit_df/conn1_pcm.csv")
+
+    translation_conn2 = model.predict(conn2_translations)
+    pdtb_df['Conn2_PCM'] = pdtb_df['Conn2'].copy()
+    pdtb_df.loc[pd.notnull(pdtb_df['Conn2_PCM']), 'Conn2'] = translation_conn2
+    pdtb_df.to_csv("data/pcmExplicitConnectives/explicit_df/conn2_pcm.csv")
+
+    translation_raw_text = model.predict(connective_rawtext_translations)
+    pdtb_df['Connective_RawText_PCM'] = pdtb_df["Connective_RawText"].copy()
+    pdtb_df.loc[pd.notnull(pdtb_df['Connective_RawText']), 'Connective_RawText'] = translation_raw_text
+    pdtb_df.to_csv("data/pcmExplicitConnectives/explicit_df/connectivefullText_pcm.csv")
+ 
     pdtb_df.to_csv(argss.pdtb_pcm)
     
-
-    
-
 
 
 

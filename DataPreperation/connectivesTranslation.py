@@ -63,6 +63,7 @@ def main(argss):
     pdtb_df.loc[pd.notnull(pdtb_df['Connective_RawText_PCM']), 'Connective_RawText'] = translation_raw_text
     pdtb_df.to_csv("data/pcmExplicitConnectives/explicit_df/connectivefullText.csv")
     # Update the DataFrame with the translated values
+    pdtb_df.to_csv(argss.pdtb_pcm)
     
     
     

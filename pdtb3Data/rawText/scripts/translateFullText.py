@@ -44,7 +44,7 @@ for folder_path in folder_names:
             lines = file.readlines()
 
         # Remove empty lines from the content
-        english_non_empty_lines = [line for line in lines if line.strip()]
+        english_non_empty_lines = ["translate english to pcm:" + line + "\n" for line in lines if line.strip()]
 
         pcm_preds = model.predict(english_non_empty_lines)
 
@@ -54,6 +54,7 @@ for folder_path in folder_names:
         pcm_folder_path = folderchecker(pidgin_parallel_path, folder_list)
 
         print(f"file name is {pcm_folder_path}")
+        pcm_preds = [line + "\n\n" for line in pcm_preds]
         writelines(pcm_folder_path, pcm_preds)
-
+        
 

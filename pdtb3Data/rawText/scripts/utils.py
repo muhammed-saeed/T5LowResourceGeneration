@@ -1,4 +1,5 @@
 import os
+import json
 # Recursive function to get all files inside a folder and its subfolders
 def get_all_files(folder_path):
     file_paths = []
@@ -31,3 +32,22 @@ def folderchecker(folder_path_pcm, folder_list):
 
     return file_path
 
+
+
+
+def foldercheckerJson(folder_path_pcm, folder_list):
+    folder_path = os.path.join(folder_path_pcm, *folder_list[:-1])
+    print(folder_path)
+
+    # Create the folder path if it doesn't exist
+    os.makedirs(folder_path, exist_ok=True)
+    print("Folder created:", folder_path)
+
+    file_path = os.path.join(folder_path, folder_list[-1])
+    if not os.path.exists(file_path):
+        # Create the file
+        with open(file_path, "w") as file:
+            print("File created:", file_path)
+            json.dump({}, file)  # Initialize the file with an empty JSON object
+
+    return file_path

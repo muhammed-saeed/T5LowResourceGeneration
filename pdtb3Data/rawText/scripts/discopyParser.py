@@ -91,7 +91,7 @@ def apply_parseren(r, parser):
         doc.sentences[sent_i].embeddings = embeddings
     doc = parser(doc)
     doc_json = doc.to_json()
-    return {"translatedDetails": str(doc_json)}
+    return {"parsedData": str(doc_json)}
 
 if __name__ == '__main__':
     print("you are welcome here")
@@ -138,5 +138,5 @@ if __name__ == '__main__':
                 output.append(result)
                 # print(f"the results {result}", file=sys.stderr)
 
-                with open(jsonFilePath, "w") as file:
+            with open(jsonFilePath, "w") as file:
                     json.dump(output, file)

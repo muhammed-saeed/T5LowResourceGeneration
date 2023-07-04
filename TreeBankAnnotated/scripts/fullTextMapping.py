@@ -1,130 +1,102 @@
-import argparse
 import pandas as pd
-import numpy as np
 
-def main(args):
-    annotated_df = pd.read_csv(args.csv_file_explicit_implicit)
-    treebank_df = pd.read_csv(args.treebank_df)
-
-    # Initialize list to store full texts
-    full_texts = []
+def search_treebank(treebank, full_text, arg1raw, arg2raw, connraw):
     pcm_full_text = []
 
-    # Iterate over rows in annotated_df
-    for _, row in annotated_df.iterrows():
-        arg1_span = str(row['arg1span'])
-        arg2_span = str(row['arg2span'])
-        connective_span = str(row['connspan'])
+    for i in range(len(full_text)):
+        # Get the values at index i from each series
+        f_text = full_text[i]
+        a1_raw = arg1raw[i]
+        a2_raw = arg2raw[i]
+        c_raw = connraw[i]
 
-        # Check if connective_span is NaN
-        if pd.isna(connective_span):
-            if arg1_span < arg2_span:
-                full_text = f"{row['arg1raw']} {row['arg2raw']}"
-                matching_rows = df.loc[df['text_en'].str.contains(full_text, na=False)]
+        # Check if conn_raw is NaN and replace it with an empty string
+        if pd.isna(c_raw):
+            c_raw = ""
 
-                if not matching_rows.empty:
-                    # Retrieve the corresponding value from df['text_ortho']
-                    corresponding_value_pcm = matching_rows['text_ortho'].values[0]
-                    # print(corresponding_value)
-                    pcm_full_text.append(corresponding_value_pcm)
+        # Check if arg2raw is NaN and replace it with an empty string
+        if pd.isna(a2_raw):
+            a2_raw = ""
 
-                else:
-                    matching_rows = df.loc[df['text_en'].str.contains(row['arg1raw'], na=False)]
+        # Check if arg1raw is NaN and replace it with an empty string
+        if pd.isna(a1_raw):
+            a1_raw = ""
 
-                    if not matching_rows.empty:
-                        # Retrieve the corresponding value from df['text_ortho']
-                        corresponding_value_pcm1 = matching_rows['text_ortho'].values[0]
-                        # print(corresponding_value)
-                    matching_rows = df.loc[df['text_en'].str.contains(row['arg2raw'], na=False)]
+        # Step 1: Search for full text in treebank['Text_en']
+        if f_text == "neglect for now":
+            pcm_full_text.append("neglect for now")
 
-                    if not matching_rows.empty:
-                        # Retrieve the corresponding value from df['text_ortho']
-                        corresponding_value_pcm2 = matching_rows['text_ortho'].values[0]
-                        # print(corresponding_value)
-                    pcmText = corresponding_value_pcm1 + " " + corresponding_value_pcm2
-                    pcm_full_text.append(pcmText)                    
-                        
-
-
-            else:
-                full_text = f"{row['arg2raw']} {row['arg1raw']}"
-                matching_rows = df.loc[df['text_en'].str.contains(full_text, na=False)]
-
-                if not matching_rows.empty:
-                    # Retrieve the corresponding value from df['text_ortho']
-                    corresponding_value_pcm = matching_rows['text_ortho'].values[0]
-                    # print(corresponding_value)
-                    pcm_full_text.append(corresponding_value_pcm)
-
-                else:
-                    matching_rows = df.loc[df['text_en'].str.contains(row['arg2raw'], na=False)]
-
-                    if not matching_rows.empty:
-                        # Retrieve the corresponding value from df['text_ortho']
-                        corresponding_value_pcm1 = matching_rows['text_ortho'].values[0]
-                        # print(corresponding_value)
-                    matching_rows = df.loc[df['text_en'].str.contains(row['arg1raw'], na=False)]
-
-                    if not matching_rows.empty:
-                        # Retrieve the corresponding value from df['text_ortho']
-                        corresponding_value_pcm2 = matching_rows['text_ortho'].values[0]
-                        # print(corresponding_value)
-                    pcmText = corresponding_value_pcm1 + " " + corresponding_value_pcm2
-                    pcm_full_text.append(pcmText)   
-
-
-
-
-
-
-        elif ';' in arg1_span or ';' in arg2_span or ';' in connective_span:
-            full_text = "neglect for now"
         else:
+            matching_rows = treebank.loc[treebank['Text_en'].str.contains(f_text, case=False, na=False, regex=False)]
+            if not matching_rows.empty:
+                corresponding_value_pcm = matching_rows['Text_ortho'].values[0]
+                pcm_full_text.append(corresponding_value_pcm)
             else:
-            # Process connective_span
-            if connective_span.lower() == 'nan':
-                if arg1_span.lower() !='nan' and arg2_span.lower() !='nan' :
-                    if arg1_span < arg2_span:
-                        full_text = row['arg1raw'] + row['arg2raw'] 
+                # Step 2: Search for arg1 in treebank['Text_en']
+                matching_rows = treebank.loc[treebank['Text_en'].str.contains(a1_raw, case=False, na=False, regex=False)]
+                if not matching_rows.empty:
+                    corresponding_value_pcm1 = matching_rows['Text_ortho'].values[0]
+
+                    # Step 3: Search for conn1 + arg2 in treebank['Text_en']
+                    conn_arg2_text = c_raw + a2_raw
+                    matching_rows = treebank.loc[treebank['Text_en'].str.contains(conn_arg2_text, case=False, na=False, regex=False)]
+                    if not matching_rows.empty:
+                        corresponding_value_pcm2 = matching_rows['Text_ortho'].values[0]
                     else:
-                        full_text = row['arg2raw'] + row['arg1raw'] 
-                    # full_text = row['arg1raw']
-                elif arg1_span.lower() == 'nan':
-                    full_text = row['arg2raw']
-                elif arg2_span.lower() == 'nan':
-                    full_text = row['arg1raw']
-            else:
-                try:
-                    # Convert span values to integers
-                    arg1_start, arg1_end = map(int, arg1_span.split('..'))
-                    arg2_start, arg2_end = map(int, arg2_span.split('..'))
-                    connective_start, connective_end = map(int, connective_span.split('..'))
+                        # Step 4: Search for arg2 in treebank['Text_en']
+                        matching_rows = treebank.loc[treebank['Text_en'].str.contains(a2_raw, case=False, na=False, regex=False)]
+                        if not matching_rows.empty:
+                            corresponding_value_pcm2 = matching_rows['Text_ortho'].values[0]
+                        else:
+                            corresponding_value_pcm2 = ''  # Placeholder if arg2 not found in treebank
+                #check with arg2 first
+                else:
 
-                    # Check if arg1span < connspan < arg2span
-                    if arg1_start < connective_start < arg2_start:
-                        full_text = f"{row['arg1raw']} {row['conn_raw']} {row['arg2raw']}"
-                    elif arg2_start < connective_start < arg1_start:
-                        full_text = f"{row['arg2raw']} {row['conn_raw']} {row['arg1raw']}"
-                    elif connective_start < arg1_start < arg2_start:
-                        full_text = f"{row['conn_raw']} {row['arg1raw']} {row['arg2raw']}"
-                    else:
-                        full_text = f"{row['conn_raw']} {row['arg2raw']} {row['arg1raw']}"
-                except ValueError:
-                    full_text = "neglect for now"
+                
+                    # Step 2: Search for arg1 in treebank['Text_en']
+                    matching_rows = treebank.loc[treebank['Text_en'].str.contains(a2_raw, case=False, na=False, regex=False)]
+                    if not matching_rows.empty:
+                        corresponding_value_pcm1 = matching_rows['Text_ortho'].values[0]
 
-        full_texts.append(full_text)
+                        # Step 3: Search for conn1 + arg1 in treebank['Text_en']
+                        conn_arg2_text = c_raw + a1_raw
+                        matching_rows = treebank.loc[treebank['Text_en'].str.contains(conn_arg2_text, case=False, na=False, regex=False)]
+                        if not matching_rows.empty:
+                            corresponding_value_pcm2 = matching_rows['Text_ortho'].values[0]
+                        else:
+                            # Step 4: Search for arg2 in treebank['Text_en']
+                            matching_rows = treebank.loc[treebank['Text_en'].str.contains(a1_raw, case=False, na=False, regex=False)]
+                            if not matching_rows.empty:
+                                corresponding_value_pcm2 = matching_rows['Text_ortho'].values[0]
+                            else:
+                                corresponding_value_pcm2 = ''  # Placeholder if arg2 not found in treebank
 
-    # Add full_text column to annotated_df
-    annotated_df['full_text'] = full_texts
+            
+                # Combine pcm1 and pcm2 and append to pcm_full_text
+                pcmText = corresponding_value_pcm1 + " " + corresponding_value_pcm2
+                pcm_full_text.append(pcmText)
 
-    print(annotated_df.head())
-    annotated_df.to_csv(args.fullText, index=False)
+    return pcm_full_text
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--csv_file_explicit_implicit", default="TreeBankAnnotated/csv/treebank_nur_implicit_explicit.csv")
-    parser.add_argument('--treebank_df', default="TreeBankAnnotated/csv/conllu/allDataFramesConllu.csv")
-    parser.add_argument("--fullText", default="TreeBankAnnotated/csv/processed/mergedAnnotationFullText.csv")
-    args = parser.parse_args()
-    main(args)
+treebank = pd.read_csv("TreeBankAnnotated/csv/conllu/allDataFramesConllu.csv")
+df = pd.read_csv("TreeBankAnnotated/csv/processed/mergedAnnotationFullText.csv")
+
+fulltext = df['full_text']
+arg1 = df['arg1raw']
+arg2 = df['arg2raw']
+conn_raw = df['conn_raw']
+
+result = search_treebank(treebank, fulltext, arg1, arg2, conn_raw)
+print(len(result))
+print(len(fulltext))
+
+df['PCM_FULL_TEXT'] = result
+df.to_csv("TreeBankAnnotated/csv/processed/mergedTextWithPCMFullText.csv")
+dfnng = df[df['PCM_FULL_TEXT'] != "neglect for now"]
+dfnng.to_csv("TreeBankAnnotated/csv/processed/mergedTextWithPCMFullTextNFN.csv")
+
+
+
+
+

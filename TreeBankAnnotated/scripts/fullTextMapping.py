@@ -1,5 +1,30 @@
 import pandas as pd
+import os
+import logging
+import sacrebleu
+import pandas as pd
+import random 
+import argparse
+from simpletransformers.t5 import T5Model, T5Args
+import torch
 
+torch.manual_seed(0)
+random.seed(0)
+
+logging.basicConfig(level=logging.INFO)
+transformers_logger = logging.getLogger("transformers")
+transformers_logger.setLevel(logging.WARNING)
+
+model_args = T5Args()
+model_args.max_length = 128
+model_args.length_penalty = 1
+model_args.num_beams = 5
+model_args.eval_batch_size = 32
+
+
+model_path = "/local/musaeed/BESTT5TranslationModel"
+
+model = T5Model("t5", model_path, args=model_args)
 def search_treebank(treebank, full_text, arg1raw, arg2raw, connraw):
     pcm_full_text = []
 
@@ -97,6 +122,16 @@ dfnng = df[df['PCM_FULL_TEXT'] != "neglect for now"]
 dfnng.to_csv("TreeBankAnnotated/csv/processed/mergedTextWithPCMFullTextNFN.csv")
 
 
+df = pd.read_csv("TreeBankAnnotated/csv/processed/mergedTextWithPCMFullText.csv")
 
 
 
+
+
+pcmFullText = df['PCM_FULL_TEXT'].to_list()
+
+englishToPred = ["translate pcm to english: "+ line for line in pcmFullText]
+
+t5Preds = model.predict(englishToPred)
+
+df['EnglishTranslationPCM'] = t5Preds

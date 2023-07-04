@@ -72,5 +72,7 @@ clone "discopy-vis"
 1.2.3 go to discopy-vis/app 
 then run  python run.py --port 8000
 
-
+```
 discopy-tokenize -i /local/musaeed/discourse_classification/input_file.txt | discopy-add-parses -c | python3 /local/musaeed/discopy/cli/bert/parse.py bert-base-uncased /local/musaeed/discopy_models > /local/musaeed/discourse_classification/output_file.txt
+
+```

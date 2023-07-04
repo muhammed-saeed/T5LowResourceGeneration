@@ -74,5 +74,44 @@ then run  python run.py --port 8000
 
 ```
 discopy-tokenize -i /local/musaeed/discourse_classification/input_file.txt | discopy-add-parses -c | python3 /local/musaeed/discopy/cli/bert/parse.py bert-base-uncased /local/musaeed/discopy_models > /local/musaeed/discourse_classification/output_file.txt
+```
+
+## Treebank and annotation
+
+1- cleaner the usc pcm train
+this code modify the case where the naija train has fewer lines
 
 ```
+python3 TreeBankAnnotated/scripts/cleaner.py
+
+```
+2- conllu dataset into csv and concatenate the trian/test/dev
+
+```
+python3 TreeBankAnnotated/scripts/conlluToCSV.py
+python3 TreeBankAnnotated/scripts/concacteCSV.py
+```
+
+3- from the annotated data keep the explicit and implicit connectives
+
+
+```
+python3 TreeBankAnnotated/scripts/explicitImplicitOnly.py
+```
+
+
+4- then create the full text in english format
+
+```
+python3 TreeBankAnnotated/scripts/CreateFullTextEnglish.py
+```
+
+
+5-create the corresponding NaijaText
+
+```
+python3 TreeBankAnnotated/scripts/fullTextMapping.py
+
+```
+
+

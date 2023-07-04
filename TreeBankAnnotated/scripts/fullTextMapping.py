@@ -48,16 +48,51 @@ def main(args):
 
             else:
                 full_text = f"{row['arg2raw']} {row['arg1raw']}"
+                matching_rows = df.loc[df['text_en'].str.contains(full_text, na=False)]
+
+                if not matching_rows.empty:
+                    # Retrieve the corresponding value from df['text_ortho']
+                    corresponding_value_pcm = matching_rows['text_ortho'].values[0]
+                    # print(corresponding_value)
+                    pcm_full_text.append(corresponding_value_pcm)
+
+                else:
+                    matching_rows = df.loc[df['text_en'].str.contains(row['arg2raw'], na=False)]
+
+                    if not matching_rows.empty:
+                        # Retrieve the corresponding value from df['text_ortho']
+                        corresponding_value_pcm1 = matching_rows['text_ortho'].values[0]
+                        # print(corresponding_value)
+                    matching_rows = df.loc[df['text_en'].str.contains(row['arg1raw'], na=False)]
+
+                    if not matching_rows.empty:
+                        # Retrieve the corresponding value from df['text_ortho']
+                        corresponding_value_pcm2 = matching_rows['text_ortho'].values[0]
+                        # print(corresponding_value)
+                    pcmText = corresponding_value_pcm1 + " " + corresponding_value_pcm2
+                    pcm_full_text.append(pcmText)   
+
+
+
+
+
+
         elif ';' in arg1_span or ';' in arg2_span or ';' in connective_span:
             full_text = "neglect for now"
         else:
+            else:
             # Process connective_span
             if connective_span.lower() == 'nan':
-                full_text = row['arg1raw']
-            elif arg1_span.lower() == 'nan':
-                full_text = row['arg2raw']
-            elif arg2_span.lower() == 'nan':
-                full_text = row['arg1raw']
+                if arg1_span.lower() !='nan' and arg2_span.lower() !='nan' :
+                    if arg1_span < arg2_span:
+                        full_text = row['arg1raw'] + row['arg2raw'] 
+                    else:
+                        full_text = row['arg2raw'] + row['arg1raw'] 
+                    # full_text = row['arg1raw']
+                elif arg1_span.lower() == 'nan':
+                    full_text = row['arg2raw']
+                elif arg2_span.lower() == 'nan':
+                    full_text = row['arg1raw']
             else:
                 try:
                     # Convert span values to integers
@@ -75,7 +110,7 @@ def main(args):
                     else:
                         full_text = f"{row['conn_raw']} {row['arg2raw']} {row['arg1raw']}"
                 except ValueError:
-                    full_text = "skip for now"
+                    full_text = "neglect for now"
 
         full_texts.append(full_text)
 

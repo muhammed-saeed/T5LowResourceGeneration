@@ -15,7 +15,7 @@ def main(args):
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="The Dataset ")
     parser.add_argument("--csv_file", type = str, default="TreeBankAnnotated/merged_annotations_added_with_uttid_clean.csv")
-    parser.add_argument("--csv_file_explicit_implicit", type=str, default="TreeBankAnnotated/csv/PDTB3_nur_implicit_explicit.csv")
+    parser.add_argument("--csv_file_explicit_implicit", type=str, default="TreeBankAnnotated/csv/treebank_nur_implicit_explicit.csv")
     parser.add_argument('--fulltext', type=str)
     args = parser.parse_args()
     main(args)

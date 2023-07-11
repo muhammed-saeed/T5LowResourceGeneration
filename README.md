@@ -38,6 +38,48 @@ III- Download the specific release
 `https://github.com/rknaebel/discopy/releases/download/1.1.0/bert-10.11.21-13.31.tar.gz`
 
 
+```
+
+
+We used to face some issues with the function specifically  called load_text and were able to solve it by the following modification "Please add this to the wiki also"
+
+1-  Go to this file in your env
+
+/PATH2Conda/anaconda3/envs/discourse_classifier/lib/python3.7/site-packages/keras/saving/object_registration.py
+
+2- go function names register_keras_serializable(package="Custom", name=None)
+
+3- comment on those lines
+
+ 
+
+`
+
+# if registered_name in _GLOBAL_CUSTOM_OBJECTS:
+
+        #     raise ValueError(
+
+        #         f"{registered_name} has already been registered to "
+
+        #         f"{_GLOBAL_CUSTOM_OBJECTS[registered_name]}"
+
+        #     )
+
+ 
+
+        # if arg in _GLOBAL_CUSTOM_NAMES:
+
+        #     raise ValueError(
+
+        #         f"{arg} has already been registered to "
+
+        #         f"{_GLOBAL_CUSTOM_NAMES[arg]}"
+
+        #     )
+
+```
+
+
 IV- Test your model 
 
 ```
